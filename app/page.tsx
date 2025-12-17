@@ -175,6 +175,82 @@ export default function HomePage() {
         </div>
       </section>
 
+      <section className="logo-marquee-section">
+        <div className="container mx-auto px-4 mb-16">
+          <h3 className="text-center text-4xl font-bold text-gray-900 mb-3">
+            Teknologi yang Digunakan
+          </h3>
+          <p className="text-center text-gray-600 max-w-2xl mx-auto">
+            Menggunakan tools dan framework terbaik untuk hasil maksimal
+          </p>
+        </div>
+
+        {/* Gradient Fade Effects */}
+        <div className="marquee-fade-left" />
+        <div className="marquee-fade-right" />
+
+        {/* Marquee Track */}
+        <div className="marquee-container">
+          <div className="marquee-track">
+            {/* Set 1 */}
+            <div className="marquee-content">
+              <div className="logo-item">
+                <img src="/logos/arcmap.png" alt="ArcMap" />
+                <span className="logo-tooltip">ArcMap</span>
+              </div>
+              <div className="logo-item">
+                <img src="/logos/vscode.png" alt="VS Code" />
+                <span className="logo-tooltip">VS Code</span>
+              </div>
+              <div className="logo-item">
+                <img src="/logos/nextjs.png" alt="Next.js" />
+                <span className="logo-tooltip">Next.js</span>
+              </div>
+              <div className="logo-item">
+                <img src="/logos/react.png" alt="React" />
+                <span className="logo-tooltip">React</span>
+              </div>
+              <div className="logo-item">
+                <img src="/logos/tailwind.png" alt="Tailwind" />
+                <span className="logo-tooltip">Tailwind</span>
+              </div>
+              <div className="logo-item">
+                <img src="/logos/typescript.png" alt="TypeScript" />
+                <span className="logo-tooltip">TypeScript</span>
+              </div>
+            </div>
+
+            {/* Set 2 - Duplicate untuk seamless loop */}
+            <div className="marquee-content">
+              <div className="logo-item">
+                <img src="/logos/arcmap.png" alt="ArcMap" />
+                <span className="logo-tooltip">ArcMap</span>
+              </div>
+              <div className="logo-item">
+                <img src="/logos/vscode.png" alt="VS Code" />
+                <span className="logo-tooltip">VS Code</span>
+              </div>
+              <div className="logo-item">
+                <img src="/logos/nextjs.png" alt="Next.js" />
+                <span className="logo-tooltip">Next.js</span>
+              </div>
+              <div className="logo-item">
+                <img src="/logos/react.png" alt="React" />
+                <span className="logo-tooltip">React</span>
+              </div>
+              <div className="logo-item">
+                <img src="/logos/tailwind.png" alt="Tailwind" />
+                <span className="logo-tooltip">Tailwind</span>
+              </div>
+              <div className="logo-item">
+                <img src="/logos/typescript.png" alt="TypeScript" />
+                <span className="logo-tooltip">TypeScript</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
       {/* About Section */}
       <section id="about" className="py-20 bg-white/50">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">

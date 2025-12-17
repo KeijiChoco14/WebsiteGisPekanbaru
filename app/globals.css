@@ -8,6 +8,168 @@
   }
 }
 
+/* CSS TOOLS YANG DIGUNAKAN */
+.logo-marquee-section {
+  position: relative;
+  padding: 7rem 0;
+  background-color: white;
+  overflow: hidden;
+}
+
+/* Gradient Fade Effects */
+.marquee-fade-left {
+  pointer-events: none;
+  position: absolute;
+  inset: 0;
+  left: 0;
+  width: 12rem;
+  background: linear-gradient(to right, white, rgba(255, 255, 255, 0.8), transparent);
+  z-index: 10;
+}
+
+.marquee-fade-right {
+  pointer-events: none;
+  position: absolute;
+  inset: 0;
+  right: 0;
+  left: auto;
+  width: 12rem;
+  background: linear-gradient(to left, white, rgba(255, 255, 255, 0.8), transparent);
+  z-index: 10;
+}
+
+/* Responsive Fade Width */
+@media (max-width: 768px) {
+  .marquee-fade-left,
+  .marquee-fade-right {
+    width: 8rem;
+  }
+}
+
+/* Marquee Container */
+.marquee-container {
+  width: 100%;
+  overflow: hidden;
+}
+
+/* Marquee Track - INI YANG PENTING! */
+.marquee-track {
+  display: flex;
+  width: max-content;
+  animation: marquee-scroll 25s linear infinite;
+}
+
+/* Pause on Hover */
+.marquee-container:hover .marquee-track {
+  animation-play-state: paused;
+}
+
+/* Marquee Content Wrapper */
+.marquee-content {
+  display: flex;
+  align-items: center;
+  flex-shrink: 0;
+}
+
+/* Logo Item */
+.logo-item {
+  position: relative;
+  margin: 0 4rem;
+  cursor: pointer;
+  transition: transform 0.3s ease;
+}
+
+/* Responsive Logo Spacing */
+@media (max-width: 1024px) {
+  .logo-item {
+    margin: 0 3rem;
+  }
+}
+
+@media (max-width: 768px) {
+  .logo-item {
+    margin: 0 2rem;
+  }
+}
+
+/* Logo Image */
+.logo-item img {
+  height: 8rem;
+  width: auto;
+  object-fit: contain;
+  opacity: 0.75;
+  filter: grayscale(20%);
+  transition: all 0.5s ease-out;
+}
+
+/* Responsive Logo Size */
+@media (max-width: 1024px) {
+  .logo-item img {
+    height: 7rem;
+  }
+}
+
+@media (max-width: 768px) {
+  .logo-item img {
+    height: 6rem;
+  }
+}
+
+/* Logo Hover Effect */
+.logo-item:hover img {
+  opacity: 1;
+  filter: grayscale(0%);
+  transform: scale(1.1);
+  filter: drop-shadow(0 20px 25px rgba(0, 0, 0, 0.15));
+}
+
+/* Tooltip */
+.logo-tooltip {
+  position: absolute;
+  bottom: -2rem;
+  left: 50%;
+  transform: translateX(-50%);
+  opacity: 0;
+  background-color: #111827;
+  color: white;
+  font-size: 0.75rem;
+  padding: 0.25rem 0.75rem;
+  border-radius: 9999px;
+  white-space: nowrap;
+  transition: opacity 0.3s ease;
+  pointer-events: none;
+}
+
+.logo-item:hover .logo-tooltip {
+  opacity: 1;
+}
+
+/* ============================================
+   ANIMATION KEYFRAMES
+   ============================================ */
+
+@keyframes marquee-scroll {
+  0% {
+    transform: translateX(0);
+  }
+  100% {
+    transform: translateX(-50%);
+  }
+}
+
+/* ============================================
+   SPEED VARIANTS (OPSIONAL)
+   ============================================ */
+
+/* Kalau mau bikin lebih cepat, tambahkan class "marquee-fast" ke marquee-track */
+.marquee-fast {
+  animation-duration: 20s !important;
+}
+
+/* Kalau mau bikin lebih lambat, tambahkan class "marquee-slow" ke marquee-track */
+.marquee-slow {
+  animation-duration: 35s !important;
+}
 
 
 @layer base {
