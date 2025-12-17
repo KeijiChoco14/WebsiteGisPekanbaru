@@ -372,8 +372,8 @@ export default function HomePage() {
             </div>
             <div>
               <h4 className="text-lg font-semibold mb-4 text-green-400">Kontak</h4>
-              <p className="text-gray-400 mb-2">📧 webgis@pekanbaru.go.id</p>
-              <p className="text-gray-400 mb-2">📞 (0761) 123-4567</p>
+              <p className="text-gray-400 mb-2">📧 farizy23ti@mahasiswa.pcr.ac.id</p>
+              <p className="text-gray-400 mb-2">📞 12345567789</p>
               <p className="text-gray-400">📍 Pekanbaru, Riau, Indonesia</p>
             </div>
             <div>

@@ -11,12 +11,16 @@ import GeoJSON from "ol/format/GeoJSON";
 import { Icon, Style } from "ol/style";
 import Overlay from "ol/Overlay";
 import "ol/ol.css";
+import Feature from "ol/Feature";
+import Geometry from "ol/geom/Geometry";
+import Point from "ol/geom/Point";
+
 
 export default function MapComponent() {
   const mapRef = useRef<HTMLDivElement>(null);
   const popupRef = useRef<HTMLDivElement>(null);
   const mapInstanceRef = useRef<Map | null>(null);
-  
+
   const [showPolygon, setShowPolygon] = useState(true);
   const [showBanjir, setShowBanjir] = useState(true);
   const [showTrash, setShowTrash] = useState(true);
@@ -117,11 +121,15 @@ export default function MapComponent() {
       },
     });
 
-    let highlight: any;
-    const highlightFeature = function (pixel: number[]) {
-      const feature = map.forEachFeatureAtPixel(pixel, function (feature) {
-        return feature;
-      });
+    let highlight: Feature<Geometry> | null = null;
+
+    const highlightFeature = (pixel: number[]) => {
+      const feature = map.forEachFeatureAtPixel(pixel, (feat) => {
+        if (feat instanceof Feature) {
+          return feat;
+        }
+      }) as Feature<Geometry> | undefined;
+
       if (feature !== highlight) {
         if (highlight) {
           featureOverlay.getSource()?.removeFeature(highlight);
@@ -129,9 +137,10 @@ export default function MapComponent() {
         if (feature) {
           featureOverlay.getSource()?.addFeature(feature);
         }
-        highlight = feature;
+        highlight = feature ?? null;
       }
     };
+
 
     // Click event untuk popup
     map.on("singleclick", function (evt) {
@@ -140,15 +149,20 @@ export default function MapComponent() {
       });
 
       if (feature) {
-        const geometry = feature.getGeometry();
-        const coordinates = geometry?.getType() === 'Point' 
-          ? geometry.getCoordinates() 
-          : evt.coordinate;
+        let coordinates = evt.coordinate;
+
+        if (feature instanceof Feature) {
+          const geometry = feature.getGeometry();
+          if (geometry instanceof Point) {
+            coordinates = geometry.getCoordinates();
+          }
+        }
+
         const properties = feature.getProperties();
-        
+
         let content = "<div class='p-4'>";
         content += "<h3 class='font-bold text-lg mb-2 text-gray-800'>Informasi Lokasi</h3>";
-        
+
         // Data Banjir
         if (properties.Nama_Pemetaan) {
           content += `<p class='mb-1'><strong>Nama Daerah:</strong> ${properties.Nama_Pemetaan}</p>`;
@@ -156,7 +170,7 @@ export default function MapComponent() {
         if (properties.Jumlah_Korban) {
           content += `<p class='mb-1'><strong>Jumlah Korban:</strong> ${properties.Jumlah_Korban}</p>`;
         }
-        
+
         // Data Polygon
         if (properties.DESA) {
           content += `<p class='mb-1'><strong>Desa:</strong> ${properties.DESA}</p>`;
@@ -164,7 +178,7 @@ export default function MapComponent() {
         if (properties.OBJECTID) {
           content += `<p class='mb-1'><strong>ID:</strong> ${properties.OBJECTID}</p>`;
         }
-        
+
         // Data RT/RW & Sampah
         if (properties.kelurahan) {
           content += `<p class='mb-1'><strong>Kelurahan:</strong> ${properties.kelurahan}</p>`;
@@ -181,14 +195,14 @@ export default function MapComponent() {
         if (properties.status) {
           content += `<p class='mb-1'><strong>Status:</strong> <span class='text-${properties.status === 'Aktif' ? 'green' : 'red'}-600 font-semibold'>${properties.status}</span></p>`;
         }
-        
+
         content += "</div>";
-        
+
         const popupContent = popupRef.current?.querySelector("#popup-content");
         if (popupContent) {
           popupContent.innerHTML = content;
         }
-        
+
         // Show popup
         if (popupRef.current) {
           popupRef.current.style.display = "block";
@@ -213,7 +227,7 @@ export default function MapComponent() {
       }
       const pixel = map.getEventPixel(evt.originalEvent);
       highlightFeature(pixel);
-      
+
       // Display info on hover
       const feature = map.forEachFeatureAtPixel(pixel, function (feat) {
         return feat;
@@ -228,7 +242,7 @@ export default function MapComponent() {
           info.style.display = "none";
         }
       }
-      
+
       // Change cursor
       map.getTargetElement().style.cursor = feature ? 'pointer' : '';
     });
@@ -238,15 +252,15 @@ export default function MapComponent() {
 
     // Log untuk debugging
     console.log("Map initialized");
-    
+
     // Check if layers loaded
-    riauLayer.getSource()?.on('change', function() {
+    riauLayer.getSource()?.on('change', function () {
       console.log("Riau layer status:", riauLayer.getSource()?.getState());
     });
-    banjirLayer.getSource()?.on('change', function() {
+    banjirLayer.getSource()?.on('change', function () {
       console.log("Banjir layer status:", banjirLayer.getSource()?.getState());
     });
-    trashLayer.getSource()?.on('change', function() {
+    trashLayer.getSource()?.on('change', function () {
       console.log("Trash layer status:", trashLayer.getSource()?.getState());
     });
 
@@ -274,7 +288,7 @@ export default function MapComponent() {
           <h3 className="text-2xl font-bold text-gray-800 mb-2">Filter Layer</h3>
           <p className="text-sm text-gray-500">Pilih layer yang ingin ditampilkan</p>
         </div>
-        
+
         {/* Checkbox Layers */}
         <div className="space-y-4 mb-8">
           <div className="p-4 bg-gradient-to-r from-green-50 to-emerald-50 rounded-xl border-2 border-green-200 hover:border-green-400 transition">
@@ -291,7 +305,7 @@ export default function MapComponent() {
               </div>
             </label>
           </div>
-          
+
           <div className="p-4 bg-gradient-to-r from-blue-50 to-cyan-50 rounded-xl border-2 border-blue-200 hover:border-blue-400 transition">
             <label className="flex items-center space-x-3 cursor-pointer">
               <input
@@ -306,7 +320,7 @@ export default function MapComponent() {
               </div>
             </label>
           </div>
-          
+
           <div className="p-4 bg-gradient-to-r from-red-50 to-orange-50 rounded-xl border-2 border-red-200 hover:border-red-400 transition">
             <label className="flex items-center space-x-3 cursor-pointer">
               <input
@@ -360,7 +374,7 @@ export default function MapComponent() {
         {/* Info Box */}
         <div className="mt-6 p-4 bg-gradient-to-br from-blue-50 to-blue-100 rounded-lg border-2 border-blue-200">
           <p className="text-sm text-gray-700 leading-relaxed">
-            <strong className="text-blue-700">💡 Tips:</strong><br/>
+            <strong className="text-blue-700">💡 Tips:</strong><br />
             Klik pada marker atau polygon untuk melihat informasi detail
           </p>
         </div>
@@ -379,7 +393,7 @@ export default function MapComponent() {
       {/* Map Container */}
       <div className="flex-1 relative">
         <div ref={mapRef} className="w-full h-full" />
-        
+
         {/* Popup */}
         <div
           ref={popupRef}
