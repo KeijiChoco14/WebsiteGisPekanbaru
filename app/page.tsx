@@ -4,7 +4,7 @@ import { MapPin, Trash2, Home, Users, BarChart3, Map, Info, ChevronRight, Buildi
 export default function HomePage() {
   const kelurahanData = [
     {
-      name: "Kelurahan Sukajadi",
+      name: "Kelurahan TESSSSSSSSSSSSSSSSSSSSSSS",
       rt: 12,
       rw: 4,
       population: "8.500 jiwa",
