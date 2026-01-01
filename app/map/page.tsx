@@ -2,13 +2,12 @@
 
 import MapFacilities from "@/components/MapFacilities";
 
-export default function MapPage() {
+export default function Page() {
   return (
-    <div style={{ padding: 20 }}>
-      <h2>WebGIS Fasilitas Kebersihan</h2>
-
-
+    <div className="w-screen h-screen overflow-hidden">
       <MapFacilities />
     </div>
   );
 }
+
+
