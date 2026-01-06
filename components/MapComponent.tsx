@@ -13,7 +13,9 @@ import Overlay from "ol/Overlay";
 import "ol/ol.css";
 import Feature from "ol/Feature";
 import Point from "ol/geom/Point";
+import { asArray } from 'ol/color'; // Import untuk transparansi
 import { supabase } from "@/lib/supabase";
+import Link from "next/link"; // Import Link untuk navigasi
 
 export default function MapComponent() {
   const mapRef = useRef<HTMLDivElement>(null);
@@ -25,15 +27,21 @@ export default function MapComponent() {
   const [showSampah, setShowSampah] = useState(true);
   const [isLoadingData, setIsLoadingData] = useState(false);
 
-  // FETCH SAMPAH (Column: keterangan, alamat, lat, long)
+  // ... (Bagian Fetch Data Sampah, RTRW, Kelurahan SAMA SEPERTI SEBELUMNYA, tidak perlu diubah) ...
+  // Biar kode tidak kepanjangan di sini, asumsikan fungsi fetchSampah, fetchRTRW, fetchKelurahan, 
+  // dan useEffect inisialisasi map masih sama.
+
+  // Salin ulang fungsi-fungsi fetch jika perlu, atau cukup fokus ke bagian RETURN di bawah ini.
+  
+  // --- KODE FETCH DI SINI (SAMA SEPERTI SEBELUMNYA) ---
   const fetchSampah = async (source: VectorSource) => {
     const { data } = await supabase.from('lokasi_sampah').select('*');
     if (data) {
       data.forEach(item => {
         const feature = new Feature({
           geometry: new Point(fromLonLat([item.longitude, item.latitude])),
-          nama: item.keterangan, // Gunakan keterangan sebagai judul popup
-          alamat: item.alamat,   // Tampilkan alamat
+          nama: item.keterangan,
+          alamat: item.alamat,
           tipe: 'Sampah'
         });
         source.addFeature(feature);
@@ -41,14 +49,13 @@ export default function MapComponent() {
     }
   };
 
-  // FETCH RTRW (Column: keterangan, alamat, lat, long)
   const fetchRTRW = async (source: VectorSource) => {
     const { data } = await supabase.from('lokasi_rtrw').select('*');
     if (data) {
       data.forEach(item => {
         const feature = new Feature({
           geometry: new Point(fromLonLat([item.longitude, item.latitude])),
-          nama: item.keterangan, // Gunakan keterangan sebagai judul popup
+          nama: item.keterangan,
           alamat: item.alamat,
           tipe: 'RTRW'
         });
@@ -57,8 +64,6 @@ export default function MapComponent() {
     }
   };
 
-  // FETCH KELURAHAN (Format GeoJSON)
-  // FETCH KELURAHAN
   const fetchKelurahan = async (source: VectorSource) => {
     const { data } = await supabase.from('area_kelurahan').select('*');
     if (data) {
@@ -69,9 +74,7 @@ export default function MapComponent() {
           features.forEach(f => {
             f.set('nama', item.nama_kelurahan);
             f.set('tipe', 'Kelurahan');
-            // --- TAMBAHAN PENTING ---
-            // Simpan warna dari DB ke properti feature agar bisa dibaca oleh Style Function nanti
-            f.set('warna', item.warna_fill); 
+            f.set('warna', item.warna_fill);
           });
           source.addFeatures(features);
         }
@@ -87,23 +90,23 @@ export default function MapComponent() {
     const rtrwSource = new VectorSource();
     const kelurahanSource = new VectorSource();
 
-    // SETUP LAYER
-    // SETUP LAYER
+    // Layer Kelurahan (Transparan)
     const kelurahanLayer = new VectorLayer({
       source: kelurahanSource,
-      // UBAH BAGIAN STYLE INI
       style: function(feature) {
-        // Ambil warna dari properti feature, kalau tidak ada pakai default hijau
-        const warna = feature.get('warna') || "rgba(145, 255, 131, 0.4)";
-        
+        const rawColor = feature.get('warna') || "#4caf50"; 
+        let colorArray = asArray(rawColor);
+        colorArray[3] = 0.4; // Transparansi 40%
+
         return new Style({
-          fill: new Fill({ color: warna }),
-          stroke: new Stroke({ color: "#2E7D32", width: 2 }),
+          fill: new Fill({ color: colorArray }),
+          stroke: new Stroke({ color: rawColor, width: 2 }),
         });
       },
       visible: showKelurahan,
     });
 
+    // Layer RTRW
     const rtrwLayer = new VectorLayer({
       source: rtrwSource,
       style: new Style({
@@ -116,6 +119,7 @@ export default function MapComponent() {
       visible: showRTRW,
     });
 
+    // Layer Sampah
     const sampahLayer = new VectorLayer({
       source: sampahSource,
       style: new Style({
@@ -128,7 +132,7 @@ export default function MapComponent() {
       visible: showSampah,
     });
 
-    // INIT MAP
+    // Init Map
     const overlay = new Overlay({
       element: popupRef.current,
       autoPan: { animation: { duration: 250 } },
@@ -143,7 +147,6 @@ export default function MapComponent() {
       view: new View({ center: fromLonLat([101.438, 0.510]), zoom: 12 }),
     });
 
-    // LOAD DATA
     Promise.all([fetchSampah(sampahSource), fetchRTRW(rtrwSource), fetchKelurahan(kelurahanSource)]).then(() => {
       setIsLoadingData(false);
       const extent = kelurahanSource.getExtent();
@@ -152,7 +155,7 @@ export default function MapComponent() {
       }
     });
 
-    // INTERACTION
+    // Interaction
     map.on("pointermove", function (evt) {
       if (evt.dragging) return;
       const pixel = map.getEventPixel(evt.originalEvent);
@@ -168,7 +171,6 @@ export default function MapComponent() {
         let coordinates = evt.coordinate;
         if (geometry instanceof Point) coordinates = geometry.getCoordinates();
 
-        // KONTEN POPUP DINAMIS
         let content = `<div class="p-3 min-w-[200px]">`;
         content += `<h3 class="font-bold text-gray-800 border-b pb-1 mb-2">${props.nama || 'Tanpa Keterangan'}</h3>`;
         if (props.alamat) content += `<p class="text-sm text-gray-600 mb-1">📍 ${props.alamat}</p>`;
@@ -201,7 +203,9 @@ export default function MapComponent() {
 
   return (
     <div className="flex h-screen bg-gray-100">
-      <div className="w-80 bg-white shadow-xl p-6 z-10 flex flex-col h-full border-r">
+      
+      {/* Sidebar */}
+      <div className="w-80 bg-white shadow-xl p-6 z-10 flex flex-col h-full border-r relative">
         <h2 className="text-2xl font-bold mb-6">GIS Dashboard</h2>
         <div className="space-y-4 flex-1">
           <label className="flex items-center gap-3 p-3 bg-green-50 rounded cursor-pointer">
@@ -219,14 +223,29 @@ export default function MapComponent() {
         </div>
         <div className="mt-auto pt-4 border-t">
             <p className="text-xs text-center mb-2 text-gray-500">{isLoadingData ? "Loading..." : "Ready"}</p>
-            <a href="/admin/dashboard" className="block w-full py-2 bg-gray-800 text-white text-center rounded font-bold">Masuk Admin</a>
+            <Link href="/admin/dashboard" className="block w-full py-2 bg-gray-800 text-white text-center rounded font-bold hover:bg-gray-700 transition">
+                Masuk Admin
+            </Link>
         </div>
       </div>
+
+      {/* Map Area */}
       <div className="flex-1 relative">
         <div ref={mapRef} className="w-full h-full" />
+        
+        {/* --- TOMBOL KEMBALI DI SINI --- */}
+        <Link 
+            href="/" 
+            className="absolute top-5 right-5 z-20 bg-white px-4 py-2 rounded-lg shadow-lg font-bold text-gray-700 hover:text-blue-600 hover:shadow-xl transition flex items-center gap-2 border border-gray-200"
+        >
+            <span>🏠</span> Home
+        </Link>
+        {/* ------------------------------- */}
+
+        {/* Popup Container */}
         <div ref={popupRef} className="absolute bg-white rounded shadow-lg border hidden" style={{marginBottom: '15px'}}>
              <div id="popup-content"></div>
-             <button onClick={() => {if(popupRef.current) popupRef.current.style.display = 'none'}} className="absolute -top-2 -right-2 bg-red-500 text-white w-6 h-6 rounded-full font-bold shadow">X</button>
+             <button onClick={() => {if(popupRef.current) popupRef.current.style.display = 'none'}} className="absolute -top-2 -right-2 bg-red-500 text-white w-6 h-6 rounded-full font-bold shadow flex items-center justify-center">X</button>
         </div>
       </div>
     </div>

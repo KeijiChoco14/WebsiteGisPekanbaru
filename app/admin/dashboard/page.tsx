@@ -113,7 +113,7 @@ export default function AdminDashboard() {
           <div className="flex items-center gap-6">
             {/* Tombol Kembali ke Peta Utama */}
             <Link 
-              href="/" 
+              href="/map" 
               className="text-gray-600 hover:text-blue-600 text-sm font-semibold flex items-center gap-1 transition"
             >
               ← Lihat Peta
