@@ -280,7 +280,7 @@ export default function HomePage() {
                  Mengapa WebGIS Ini <br/><span className="text-emerald-600">Penting?</span>
                </h2>
                <p className="text-slate-600 text-lg leading-relaxed mb-6">
-                 Pengelolaan sampah di area padat penduduk seperti Sukajadi dan sekitarnya memerlukan presisi data. Sistem ini hadir untuk menjembatani kesenjangan informasi antara kondisi lapangan dan perencanaan kota.
+                 WebGIS ini digunakan sebagai media informasi titik lokasi persebaran RT/RW dan juga titik sampah yang ada di Kota Pekanbaru, Riau
                </p>
                
                <div className="space-y-4">
