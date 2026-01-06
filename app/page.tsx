@@ -4,34 +4,61 @@ import { MapPin, Trash2, Home, Users, BarChart3, Map, Info, ChevronRight, Buildi
 export default function HomePage() {
   const kelurahanData = [
     {
-      name: "Kelurahan TESSSSSSSSSSSSSSSSSSSSSSS",
-      rt: 12,
-      rw: 4,
-      population: "8.500 jiwa",
-      area: "2.3 km²",
-      trashPoints: 15,
-      image: "",
-      description: "Kelurahan Sukajadi merupakan wilayah dengan kepadatan penduduk tinggi dan memiliki sistem pengelolaan sampah yang terorganisir dengan baik."
-    },
-    {
-      name: "Kelurahan Tampan",
-      rt: 15,
+      name: "Kelurahan Sukajadi",
+      rt: 19,
       rw: 5,
-      population: "9.200 jiwa",
-      area: "2.8 km²",
-      trashPoints: 18,
-      image: "",
-      description: "Kelurahan Tampan adalah wilayah berkembang dengan area permukiman yang luas dan membutuhkan peningkatan fasilitas pengelolaan sampah."
+      population: "10.417 jiwa",
+      area: "4.87 km²",
+      image: "https://upload.wikimedia.org/wikipedia/commons/a/a1/Kantor_Lurah_Sukajadi%2C_Kecamatan_Sukajadi.jpg",
+      description: "Kelurahan Sukajadi merupakan salah satu kelurahan di Kecamatan Sukajadi, Kota Pekanbaru, Provinsi Riau, dengan kode pos 28156."
     },
     {
-      name: "Kelurahan Sidomulyo",
-      rt: 10,
+      name: "Kelurahan Kampung Melayu",
+      rt: 16,
+      rw: 8,
+      population: "9.454 jiwa",
+      area: "0.99 km²",
+      image: "https://www.pekanbaru.go.id/berkas_file/news/24052022/50298-news-lpm-kampung-melayu-o.jpeg",
+      description: "Kelurahan Kampung Melayu adalah salah satu kelurahan di Kecamatan Sukajadi, Kota Pekanbaru, Provinsi Riau, dengan kode pos 28124."
+    },
+    {
+      name: "Kelurahan Kota Baru",
+      rt: 21,
+      rw: 6,
+      population: "3.082 jiwa",
+      area: "0.19 km²",
+      image: "https://upload.wikimedia.org/wikipedia/commons/3/36/Kelurahan_Kota_Baru%2C_Kecamatan_Pekanbaru_Kota.jpg",
+      description: "Kelurahan Kota Baru adalah salah satu kelurahan yang terletak di Kecamatan Pekanbaru Kota, Kota Pekanbaru, Provinsi Riau."
+    }
+  ];
+
+  const kelurahanData2 = [
+    {
+      name: "Kelurahan Sukaramai",
+      rt: 22,
+      rw: 7,
+      population: "5.096 jiwa",
+      area: "0.21 km²",
+      image: "https://celotehriau.com/a450d92cb6be01b3b3669c18bfca7901/content_upload/images/IMG-20200927-WA0008.jpg",
+      description: "Kelurahan Sukaramai adalah kelurahan di Kecamatan Pekanbaru Kota, Kota Pekanbaru, Riau, yang terdiri dari 7 RW, mayoritas penduduknya pedagang/wiraswasta, memiliki fasilitas pendidikan dasar (TK, SD, MI), dan berbatasan dengan Kelurahan Sago (Utara), Tanah Datar (Selatan), Kota Tinggi (Timur), serta Kota Baru (Barat). Kelurahan ini merupakan bagian dari wilayah administrasi Kota Pekanbaru yang lebih luas. "
+    },
+    {
+      name: "Kelurahan Pulau Karomah",
+      rt: 13,
       rw: 3,
-      population: "7.100 jiwa",
-      area: "1.9 km²",
-      trashPoints: 12,
-      image: "",
-      description: "Kelurahan Sidomulyo memiliki karakteristik wilayah yang beragam dengan kombinasi area permukiman dan area terbuka hijau."
+      population: "3.646 jiwa",
+      area: "0.44 km²",
+      image: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQ7FDoUsa_v_ydkhOvySNgC82Xn9BsimQilgQ&s",
+      description: "Kelurahan Pulau Karomah adalah kelurahan di Kecamatan Sukajadi, Kota Pekanbaru, Riau (kode pos 28127), yang sebelumnya bernama Pulau Karam. Terletak di Jalan Teratai/Kamboja, wilayah ini bertransformasi dari daerah rawan genangan air menjadi permukiman padat penduduk dengan keberagaman suku dan agama, didominasi pekerjaan wiraswasta dan karyawan swasta. "
+    },
+    {
+      name: "Kelurahan Tanah Datar",
+      rt: 26,
+      rw: 7,
+      population: "6.652 jiwa",
+      area: "0.23 km²",
+      image: "https://riaucrimenews.com/assets/berita/original/54997950552-screenshot_2023-06-08-07-28-38-75_6012fa4d4ddec268fc5c7112cbb265e7.jpg",
+      description: "Kelurahan Tanah Datar adalah salah satu kelurahan di Kecamatan Pekanbaru Kota, Kota Pekanbaru, Riau, dengan kode pos 28115."
     }
   ];
 
@@ -103,7 +130,7 @@ export default function HomePage() {
                 <div className="bg-gradient-to-br from-blue-500 to-blue-600 p-3 rounded-xl shadow-lg">
                   <MapPin className="text-white" size={28} />
                 </div>
-                <span className="text-4xl font-bold bg-gradient-to-br from-blue-600 to-blue-700 bg-clip-text text-transparent">3</span>
+                <span className="text-4xl font-bold bg-gradient-to-br from-blue-600 to-blue-700 bg-clip-text text-transparent">6</span>
               </div>
               <h4 className="text-gray-600 font-semibold text-lg">Kelurahan</h4>
               <p className="text-gray-400 text-sm mt-1">Wilayah survei</p>
@@ -192,7 +219,7 @@ export default function HomePage() {
                 </h3>
                 <p className="text-gray-700 mb-6 leading-relaxed">
                   Pengelolaan sampah merupakan salah satu tantangan utama dalam pembangunan kota berkelanjutan.
-                  Kota Pekanbaru, khususnya di tiga kelurahan target (Sukajadi, Tampan, dan Sidomulyo), memerlukan
+                  Kota Pekanbaru, khususnya di enam kelurahan target (Sukajadi, Sukaramai, Kota Baru, Pulau Karomah, Tanah Datar, dan Kampung Melayu), memerlukan
                   sistem informasi yang terintegrasi untuk memantau distribusi fasilitas pengelolaan sampah dan
                   lokasi permukiman RT/RW.
                 </p>
@@ -291,10 +318,50 @@ export default function HomePage() {
                       <span className="text-gray-600 font-medium">Luas Wilayah</span>
                       <span className="text-xl font-bold text-orange-600">{kel.area}</span>
                     </div>
+                  </div>
+                </div>
+              </div>
+            ))}
+          </div>
 
-                    <div className="flex justify-between items-center">
-                      <span className="text-gray-600 font-medium">Titik Sampah</span>
-                      <span className="text-xl font-bold text-red-600">{kel.trashPoints}</span>
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-12">
+            {kelurahanData2.map((kel, index) => (
+              <div key={index} className="bg-white rounded-2xl shadow-xl overflow-hidden transform hover:scale-105 hover:shadow-2xl transition duration-300 border border-gray-100">
+                <div className="relative h-48 bg-gradient-to-br from-green-400 to-blue-500">
+                  <Image
+                    src={kel.image}
+                    alt={kel.name}
+                    fill
+                    className="object-cover opacity-80"
+                  />
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent"></div>
+                  <div className="absolute bottom-4 left-4 text-white">
+                    <MapPin className="mb-2" size={32} />
+                    <h3 className="text-2xl font-bold">{kel.name}</h3>
+                  </div>
+                </div>
+                <div className="p-6">
+                  <p className="text-gray-600 mb-6 leading-relaxed">{kel.description}</p>
+
+                  <div className="space-y-3">
+                    <div className="flex justify-between items-center pb-3 border-b border-gray-100">
+                      <span className="text-gray-600 font-medium">Jumlah RT</span>
+                      <span className="text-xl font-bold text-green-600">{kel.rt}</span>
+                    </div>
+
+                    <div className="flex justify-between items-center pb-3 border-b border-gray-100">
+                      <span className="text-gray-600 font-medium">Jumlah RW</span>
+                      <span className="text-xl font-bold text-blue-600">{kel.rw}</span>
+                    </div>
+
+                    <div className="flex justify-between items-center pb-3 border-b border-gray-100">
+                      <span className="text-gray-600 font-medium">Populasi</span>
+                      <span className="text-xl font-bold text-purple-600">{kel.population}</span>
+                    </div>
+
+                    <div className="flex justify-between items-center pb-3 border-b border-gray-100">
+                      <span className="text-gray-600 font-medium">Luas Wilayah</span>
+                      <span className="text-xl font-bold text-orange-600">{kel.area}</span>
                     </div>
                   </div>
                 </div>
@@ -309,26 +376,24 @@ export default function HomePage() {
               <div className="text-center p-6 bg-white rounded-2xl shadow-md hover:shadow-xl transition border border-blue-100">
                 <Users className="mx-auto mb-3 text-blue-600" size={36} />
                 <p className="text-gray-500 text-sm mb-2 font-medium">Total Populasi</p>
-                <p className="text-3xl font-bold text-blue-600">24.800</p>
+                <p className="text-3xl font-bold text-blue-600">38.347</p>
                 <p className="text-gray-400 text-xs mt-1">jiwa</p>
               </div>
               <div className="text-center p-6 bg-white rounded-2xl shadow-md hover:shadow-xl transition border border-green-100">
                 <MapPin className="mx-auto mb-3 text-green-600" size={36} />
                 <p className="text-gray-500 text-sm mb-2 font-medium">Total Luas</p>
-                <p className="text-3xl font-bold text-green-600">7.0</p>
+                <p className="text-3xl font-bold text-green-600">6.93</p>
                 <p className="text-gray-400 text-xs mt-1">km²</p>
               </div>
               <div className="text-center p-6 bg-white rounded-2xl shadow-md hover:shadow-xl transition border border-purple-100">
                 <Home className="mx-auto mb-3 text-purple-600" size={36} />
-                <p className="text-gray-500 text-sm mb-2 font-medium">Rata-rata RT</p>
-                <p className="text-3xl font-bold text-purple-600">12.3</p>
-                <p className="text-gray-400 text-xs mt-1">per kelurahan</p>
+                <p className="text-gray-500 text-sm mb-2 font-medium">Total RT 6 Kelurahan</p>
+                <p className="text-3xl font-bold text-purple-600">117</p>
               </div>
-              <div className="text-center p-6 bg-white rounded-2xl shadow-md hover:shadow-xl transition border border-red-100">
-                <Trash2 className="mx-auto mb-3 text-red-600" size={36} />
-                <p className="text-gray-500 text-sm mb-2 font-medium">Rata-rata TPS</p>
-                <p className="text-3xl font-bold text-red-600">15</p>
-                <p className="text-gray-400 text-xs mt-1">titik sampah</p>
+              <div className="text-center p-6 bg-white rounded-2xl shadow-md hover:shadow-xl transition border border-purple-100">
+                <Home className="mx-auto mb-3 text-purple-600" size={36} />
+                <p className="text-gray-500 text-sm mb-2 font-medium">Total RW 6 Kelurahan</p>
+                <p className="text-3xl font-bold text-purple-600">36</p>
               </div>
             </div>
           </div>
@@ -367,13 +432,12 @@ export default function HomePage() {
                 <h4 className="text-xl font-bold">WebGIS Sampah</h4>
               </div>
               <p className="text-gray-400 leading-relaxed">
-                Platform digital untuk monitoring dan analisis distribusi fasilitas pengelolaan sampah di Kota Pekanbaru
+                Platform digital untuk monitoring dan analisis distribusi RT & RW di Kota Pekanbaru
               </p>
             </div>
             <div>
               <h4 className="text-lg font-semibold mb-4 text-green-400">Kontak</h4>
-              <p className="text-gray-400 mb-2">📧 farizy23ti@mahasiswa.pcr.ac.id</p>
-              <p className="text-gray-400 mb-2">📞 12345567789</p>
+              <p className="text-gray-400 mb-2">📧 FFAC 3 TI C</p>
               <p className="text-gray-400">📍 Pekanbaru, Riau, Indonesia</p>
             </div>
             <div>
@@ -385,11 +449,23 @@ export default function HomePage() {
                 </li>
                 <li className="text-gray-400 flex items-center gap-2">
                   <ChevronRight size={16} className="text-green-500" />
-                  Kelurahan Tampan
+                  Kelurahan Kampung Melayu
                 </li>
                 <li className="text-gray-400 flex items-center gap-2">
                   <ChevronRight size={16} className="text-green-500" />
-                  Kelurahan Sidomulyo
+                  Kelurahan Kota baru
+                </li>
+                <li className="text-gray-400 flex items-center gap-2">
+                  <ChevronRight size={16} className="text-green-500" />
+                  Kelurahan Sukaramai
+                </li>
+                <li className="text-gray-400 flex items-center gap-2">
+                  <ChevronRight size={16} className="text-green-500" />
+                  Kelurahan Pulau Karomah
+                </li>
+                <li className="text-gray-400 flex items-center gap-2">
+                  <ChevronRight size={16} className="text-green-500" />
+                  Kelurahan Tanah Datar
                 </li>
               </ul>
             </div>
