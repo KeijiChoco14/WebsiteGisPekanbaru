@@ -48,7 +48,7 @@ Proyek ini dikembangkan oleh **Kelompok FFAC** (Kelas 3 TI C - Politeknik Caltex
 
 * **Frontend:** [Next.js](https://nextjs.org/) (App Router), React
 * **Styling:** [Tailwind CSS](https://tailwindcss.com/)
-* **Maps:** [LeaFlet]([https://openlayers.org/](https://leafletjs.com/))
+* **Maps:** [LeaFlet](https://leafletjs.com/)
 * **Backend & Auth:** [Supabase](https://supabase.com/)
 * **Icons:** [Lucide React](https://lucide.dev/)
 * **Animation:** [Framer Motion](https://www.framer.com/motion/)
