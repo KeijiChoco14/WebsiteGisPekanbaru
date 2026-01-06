@@ -58,6 +58,7 @@ export default function MapComponent() {
   };
 
   // FETCH KELURAHAN (Format GeoJSON)
+  // FETCH KELURAHAN
   const fetchKelurahan = async (source: VectorSource) => {
     const { data } = await supabase.from('area_kelurahan').select('*');
     if (data) {
@@ -68,6 +69,9 @@ export default function MapComponent() {
           features.forEach(f => {
             f.set('nama', item.nama_kelurahan);
             f.set('tipe', 'Kelurahan');
+            // --- TAMBAHAN PENTING ---
+            // Simpan warna dari DB ke properti feature agar bisa dibaca oleh Style Function nanti
+            f.set('warna', item.warna_fill); 
           });
           source.addFeatures(features);
         }
@@ -84,12 +88,19 @@ export default function MapComponent() {
     const kelurahanSource = new VectorSource();
 
     // SETUP LAYER
+    // SETUP LAYER
     const kelurahanLayer = new VectorLayer({
       source: kelurahanSource,
-      style: new Style({
-        fill: new Fill({ color: "rgba(145, 255, 131, 0.4)" }),
-        stroke: new Stroke({ color: "#2E7D32", width: 2 }),
-      }),
+      // UBAH BAGIAN STYLE INI
+      style: function(feature) {
+        // Ambil warna dari properti feature, kalau tidak ada pakai default hijau
+        const warna = feature.get('warna') || "rgba(145, 255, 131, 0.4)";
+        
+        return new Style({
+          fill: new Fill({ color: warna }),
+          stroke: new Stroke({ color: "#2E7D32", width: 2 }),
+        });
+      },
       visible: showKelurahan,
     });
 
