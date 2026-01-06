@@ -12,22 +12,25 @@ import {
   Info,
   ChevronRight,
   Building2,
-  TreePine,
+  Leaf,
+  ArrowRight,
+  Target,
+  Loader2,
 } from "lucide-react";
 import Link from "next/link";
-import { Loader2 } from "lucide-react";
+import { motion, useScroll, useTransform } from "framer-motion";
 
 export default function HomePage() {
   const [activeSection, setActiveSection] = useState("home");
-
   const [isLoading, setIsLoading] = useState(false);
+  const { scrollYProgress } = useScroll();
+  const y = useTransform(scrollYProgress, [0, 1], ["0%", "50%"]);
 
   const handleMapTransition = () => {
     setIsLoading(true);
-    // Navigasi manual akan otomatis memicu loading bar jika sudah pasang toploader
   };
 
-  // Logika untuk mendeteksi section yang aktif saat di-scroll
+  // Scroll Spy Logic
   useEffect(() => {
     const handleScroll = () => {
       const sections = ["home", "about", "data"];
@@ -35,7 +38,6 @@ export default function HomePage() {
         const element = document.getElementById(section);
         if (element) {
           const rect = element.getBoundingClientRect();
-          // Perubahan warna terjadi jika posisi section berada di rentang pandang
           if (rect.top <= 150 && rect.bottom >= 150) {
             setActiveSection(section);
             break;
@@ -43,12 +45,10 @@ export default function HomePage() {
         }
       }
     };
-
     window.addEventListener("scroll", handleScroll);
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
-  // Fungsi navigasi klik yang halus (Smooth Scroll)
   const scrollTo = (e: React.MouseEvent<HTMLAnchorElement>, id: string) => {
     e.preventDefault();
     const element = document.getElementById(id);
@@ -61,630 +61,400 @@ export default function HomePage() {
     }
   };
 
-  const getNavLinkClass = (section: string) => {
-    const isActive = activeSection === section;
-    return `flex items-center space-x-2 px-3 py-2 rounded-lg transition-all duration-300 font-medium ${
-      isActive
-        ? "text-green-700 bg-green-50 shadow-sm"
-        : "text-gray-600 hover:bg-gray-100 hover:text-green-600"
-    }`;
-  };
-  const kelurahanData = [
+  // Data Gabungan
+  const allKelurahan = [
     {
       name: "Kelurahan Sukajadi",
       rt: 19,
       rw: 5,
-      population: "10.417 jiwa",
-      area: "4.87 km²",
-      image:
-        "https://upload.wikimedia.org/wikipedia/commons/a/a1/Kantor_Lurah_Sukajadi%2C_Kecamatan_Sukajadi.jpg",
-      description:
-        "Kelurahan Sukajadi merupakan salah satu kelurahan di Kecamatan Sukajadi, Kota Pekanbaru, Provinsi Riau, dengan kode pos 28156.",
+      population: "10.417",
+      area: "4.87",
+      image: "https://upload.wikimedia.org/wikipedia/commons/a/a1/Kantor_Lurah_Sukajadi%2C_Kecamatan_Sukajadi.jpg",
+      description: "Pusat administrasi dengan kepadatan penduduk tinggi dan aksesibilitas utama.",
+      color: "from-emerald-500 to-teal-500"
     },
     {
-      name: "Kelurahan Kampung Melayu",
+      name: "Kelurahan Kp. Melayu",
       rt: 16,
       rw: 8,
-      population: "9.454 jiwa",
-      area: "0.99 km²",
-      image:
-        "https://www.pekanbaru.go.id/berkas_file/news/24052022/50298-news-lpm-kampung-melayu-o.jpeg",
-      description:
-        "Kelurahan Kampung Melayu adalah salah satu kelurahan di Kecamatan Sukajadi, Kota Pekanbaru, Provinsi Riau, dengan kode pos 28124.",
+      population: "9.454",
+      area: "0.99",
+      image: "https://www.pekanbaru.go.id/berkas_file/news/24052022/50298-news-lpm-kampung-melayu-o.jpeg",
+      description: "Kawasan bersejarah dengan tata kelola lingkungan berbasis komunitas.",
+      color: "from-blue-500 to-indigo-500"
     },
     {
       name: "Kelurahan Kota Baru",
       rt: 21,
       rw: 6,
-      population: "3.082 jiwa",
-      area: "0.19 km²",
-      image:
-        "https://upload.wikimedia.org/wikipedia/commons/3/36/Kelurahan_Kota_Baru%2C_Kecamatan_Pekanbaru_Kota.jpg",
-      description:
-        "Kelurahan Kota Baru adalah salah satu kelurahan yang terletak di Kecamatan Pekanbaru Kota, Kota Pekanbaru, Provinsi Riau.",
+      population: "3.082",
+      area: "0.19",
+      image: "https://upload.wikimedia.org/wikipedia/commons/3/36/Kelurahan_Kota_Baru%2C_Kecamatan_Pekanbaru_Kota.jpg",
+      description: "Area komersial dan hunian yang sedang berkembang pesat.",
+      color: "from-orange-500 to-red-500"
     },
-  ];
-
-  const kelurahanData2 = [
     {
       name: "Kelurahan Sukaramai",
       rt: 22,
       rw: 7,
-      population: "5.096 jiwa",
-      area: "0.21 km²",
-      image:
-        "https://celotehriau.com/a450d92cb6be01b3b3669c18bfca7901/content_upload/images/IMG-20200927-WA0008.jpg",
-      description:
-        "Kelurahan Sukaramai adalah kelurahan di Kecamatan Pekanbaru Kota, Kota Pekanbaru, Riau, yang terdiri dari 7 RW, mayoritas penduduknya pedagang/wiraswasta, memiliki fasilitas pendidikan dasar (TK, SD, MI), dan berbatasan dengan Kelurahan Sago (Utara), Tanah Datar (Selatan), Kota Tinggi (Timur), serta Kota Baru (Barat). Kelurahan ini merupakan bagian dari wilayah administrasi Kota Pekanbaru yang lebih luas. ",
+      population: "5.096",
+      area: "0.21",
+      image: "https://celotehriau.com/a450d92cb6be01b3b3669c18bfca7901/content_upload/images/IMG-20200927-WA0008.jpg",
+      description: "Pusat perdagangan dengan mayoritas penduduk berwiraswasta.",
+      color: "from-purple-500 to-pink-500"
     },
     {
-      name: "Kelurahan Pulau Karomah",
+      name: "Kelurahan P. Karomah",
       rt: 13,
       rw: 3,
-      population: "3.646 jiwa",
-      area: "0.44 km²",
-      image:
-        "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQ7FDoUsa_v_ydkhOvySNgC82Xn9BsimQilgQ&s",
-      description:
-        "Kelurahan Pulau Karomah adalah kelurahan di Kecamatan Sukajadi, Kota Pekanbaru, Riau (kode pos 28127), yang sebelumnya bernama Pulau Karam. Terletak di Jalan Teratai/Kamboja, wilayah ini bertransformasi dari daerah rawan genangan air menjadi permukiman padat penduduk dengan keberagaman suku dan agama, didominasi pekerjaan wiraswasta dan karyawan swasta. ",
+      population: "3.646",
+      area: "0.44",
+      image: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQ7FDoUsa_v_ydkhOvySNgC82Xn9BsimQilgQ&s",
+      description: "Transformasi kawasan dari rawan banjir menjadi permukiman tertata.",
+      color: "from-cyan-500 to-blue-500"
     },
     {
       name: "Kelurahan Tanah Datar",
       rt: 26,
       rw: 7,
-      population: "6.652 jiwa",
-      area: "0.23 km²",
-      image:
-        "https://riaucrimenews.com/assets/berita/original/54997950552-screenshot_2023-06-08-07-28-38-75_6012fa4d4ddec268fc5c7112cbb265e7.jpg",
-      description:
-        "Kelurahan Tanah Datar adalah salah satu kelurahan di Kecamatan Pekanbaru Kota, Kota Pekanbaru, Riau, dengan kode pos 28115.",
+      population: "6.652",
+      area: "0.23",
+      image: "https://riaucrimenews.com/assets/berita/original/54997950552-screenshot_2023-06-08-07-28-38-75_6012fa4d4ddec268fc5c7112cbb265e7.jpg",
+      description: "Kawasan padat penduduk dengan semangat gotong royong yang tinggi.",
+      color: "from-rose-500 to-red-500"
     },
   ];
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-green-50 via-blue-50 to-emerald-50 scroll-smooth">
+    <div className="min-h-screen bg-slate-50 font-sans selection:bg-emerald-200 selection:text-emerald-900">
       
-      {/* 1. Overlay Loading (Keren) - Tambahkan ini */}
+      {/* --- LOADING OVERLAY --- */}
       {isLoading && (
-        <div className="fixed inset-0 z-[100] flex flex-col items-center justify-center bg-white/60 backdrop-blur-md transition-all">
+        <div className="fixed inset-0 z-[100] flex flex-col items-center justify-center bg-white/80 backdrop-blur-xl transition-all">
           <div className="relative">
-            <Loader2 className="w-16 h-16 text-green-600 animate-spin" />
-            <div className="absolute inset-0 bg-green-200 blur-2xl opacity-20 animate-pulse"></div>
+            <Loader2 className="w-20 h-20 text-emerald-600 animate-spin" />
+            <div className="absolute inset-0 bg-emerald-400 blur-2xl opacity-30 animate-pulse"></div>
           </div>
-          <p className="mt-4 font-bold text-green-800 animate-pulse tracking-wide">
-            Menyiapkan Data Spasial...
-          </p>
+          <motion.p 
+            initial={{ opacity: 0, y: 10 }}
+            animate={{ opacity: 1, y: 0 }}
+            className="mt-6 font-bold text-emerald-900 text-lg tracking-widest uppercase"
+          >
+            Memuat Peta Digital...
+          </motion.p>
         </div>
       )}
 
-      {/* Navigation */}
-      <nav className="bg-white/80 backdrop-blur-md shadow-md sticky top-0 z-50 border-b border-green-100">
+      {/* --- NAVBAR --- */}
+      <nav className="fixed top-0 w-full z-50 transition-all duration-300 bg-white/70 backdrop-blur-lg border-b border-white/20 shadow-sm">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex justify-between items-center h-16">
-            <div className="flex items-center space-x-3 group cursor-pointer">
-              <div className="bg-gradient-to-br from-green-600 to-emerald-600 p-2 rounded-xl shadow-lg group-hover:rotate-6 transition-transform">
-                <Trash2 className="text-white" size={28} />
+          <div className="flex justify-between items-center h-20">
+            {/* Logo */}
+            <div className="flex items-center gap-3 group cursor-default">
+              <div className="relative">
+                <div className="absolute inset-0 bg-emerald-500 blur-lg opacity-40 group-hover:opacity-60 transition-opacity"></div>
+                <div className="relative bg-gradient-to-br from-emerald-600 to-teal-700 p-2.5 rounded-xl shadow-lg text-white">
+                   <MapPin size={24} />
+                </div>
               </div>
               <div>
-                <h1 className="text-xl font-bold bg-gradient-to-r from-green-700 to-emerald-700 bg-clip-text text-transparent">
-                  WebGIS Pengelolaan Sampah
+                <h1 className="text-xl font-black text-slate-800 tracking-tight leading-none group-hover:text-emerald-700 transition-colors">
+                  WebGIS<span className="text-emerald-600">Sampah</span>
                 </h1>
-                <p className="text-[10px] text-gray-400 uppercase tracking-widest font-bold">Pekanbaru Digital</p>
+                <p className="text-[10px] font-bold text-slate-400 uppercase tracking-[0.2em]">Pekanbaru Smart City</p>
               </div>
             </div>
 
-            <div className="hidden md:flex space-x-2 items-center">
-              <a href="#home" onClick={(e) => scrollTo(e, "home")} className={getNavLinkClass("home")}>
-                <Home size={18} /> <span>Beranda</span>
-              </a>
-              <a href="#about" onClick={(e) => scrollTo(e, "about")} className={getNavLinkClass("about")}>
-                <Info size={18} /> <span>Tentang</span>
-              </a>
-              <a href="#data" onClick={(e) => scrollTo(e, "data")} className={getNavLinkClass("data")}>
-                <BarChart3 size={18} /> <span>Profil</span>
-              </a>
-
-              <div className="h-6 w-[1px] bg-gray-200 mx-3"></div>
-
-              {/* Tambahkan onClick={handleMapTransition} di sini */}
-              <Link
-                href="/map"
-                onClick={handleMapTransition}
-                className="flex items-center space-x-2 px-5 py-2.5 bg-gradient-to-r from-green-600 to-emerald-600 text-white rounded-xl hover:shadow-xl hover:shadow-green-200 transition-all active:scale-95 hover:-translate-y-0.5 font-semibold"
-              >
-                <Map size={18} />
-                <span>Lihat Peta</span>
-                <ChevronRight size={16} className="opacity-50" />
-              </Link>
+            {/* Desktop Menu */}
+            <div className="hidden md:flex items-center gap-1 bg-slate-100/50 p-1.5 rounded-full border border-slate-200/60 backdrop-blur-md">
+              {["home", "about", "data"].map((item) => (
+                <a
+                  key={item}
+                  href={`#${item}`}
+                  onClick={(e) => scrollTo(e, item)}
+                  className={`px-5 py-2 rounded-full text-sm font-bold transition-all duration-300 ${
+                    activeSection === item
+                      ? "bg-white text-emerald-700 shadow-sm ring-1 ring-emerald-100"
+                      : "text-slate-500 hover:text-emerald-600 hover:bg-white/50"
+                  }`}
+                >
+                  {item === "home" ? "Beranda" : item === "about" ? "Tentang" : "Data Wilayah"}
+                </a>
+              ))}
             </div>
+
+            {/* Action Button */}
+            <Link
+              href="/map"
+              onClick={handleMapTransition}
+              className="hidden md:flex group items-center gap-2 px-6 py-3 bg-slate-900 text-white rounded-xl font-bold text-sm shadow-xl hover:shadow-2xl hover:bg-emerald-600 transition-all active:scale-95"
+            >
+              <span>Buka Peta</span>
+              <ArrowRight size={16} className="group-hover:translate-x-1 transition-transform" />
+            </Link>
           </div>
         </div>
       </nav>
 
-      {/* Hero Section */}
-      <section id="home" className="relative overflow-hidden">
-        <div className="absolute inset-0 bg-gradient-to-br from-green-100/50 to-blue-100/50"></div>
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20 relative">
-          <div className="text-center mb-16 animate-fade-in">
-            <div className="inline-block mb-4 px-4 py-2 bg-green-100 rounded-full">
-              <span className="text-green-700 text-sm font-semibold">
-                🌍 Proyek WebGIS 2025
-              </span>
-            </div>
-            <h2 className="text-5xl md:text-6xl font-bold text-gray-800 mb-4 leading-tight">
-              Sistem Informasi Geografis
-            </h2>
-            <h3 className="text-3xl md:text-4xl font-semibold bg-gradient-to-r from-green-600 to-emerald-600 bg-clip-text text-transparent mb-6">
-              Pengelolaan Sampah Berbasis WebGIS
-            </h3>
-            <p className="text-xl text-gray-600 max-w-3xl mx-auto leading-relaxed">
-              Platform digital untuk pemetaan dan monitoring lokasi rumah RT/RW
-              serta titik tempat pembuangan sampah di tiga kelurahan Kota
-              Pekanbaru
-            </p>
-          </div>
+      {/* --- HERO SECTION --- */}
+      <section id="home" className="relative pt-32 pb-20 overflow-hidden">
+        {/* Abstract Background */}
+        <div className="absolute inset-0 -z-10">
+          <div className="absolute top-0 right-0 w-[500px] h-[500px] bg-emerald-200/40 rounded-full blur-3xl opacity-50 translate-x-1/2 -translate-y-1/2"></div>
+          <div className="absolute bottom-0 left-0 w-[500px] h-[500px] bg-blue-200/40 rounded-full blur-3xl opacity-50 -translate-x-1/2 translate-y-1/2"></div>
+          <div className="absolute inset-0 bg-[url('https://grainy-gradients.vercel.app/noise.svg')] opacity-20"></div>
+        </div>
 
-          {/* Stats Cards */}
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 mb-16">
-            <div className="bg-white rounded-2xl shadow-xl p-6 transform hover:scale-105 hover:shadow-2xl transition duration-300 border border-blue-100">
-              <div className="flex items-center justify-between mb-4">
-                <div className="bg-gradient-to-br from-blue-500 to-blue-600 p-3 rounded-xl shadow-lg">
-                  <MapPin className="text-white" size={28} />
-                </div>
-                <span className="text-4xl font-bold bg-gradient-to-br from-blue-600 to-blue-700 bg-clip-text text-transparent">
-                  6
-                </span>
-              </div>
-              <h4 className="text-gray-600 font-semibold text-lg">Kelurahan</h4>
-              <p className="text-gray-400 text-sm mt-1">Wilayah survei</p>
-            </div>
+        <div className="max-w-7xl mx-auto px-4 text-center">
+          <motion.div 
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6 }}
+            className="inline-flex items-center gap-2 px-4 py-2 bg-emerald-50 border border-emerald-100 rounded-full text-emerald-700 text-xs font-bold uppercase tracking-widest mb-8 shadow-sm"
+          >
+            <span className="relative flex h-2 w-2">
+              <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
+              <span className="relative inline-flex rounded-full h-2 w-2 bg-emerald-500"></span>
+            </span>
+            Sistem Informasi Geografis 2025
+          </motion.div>
 
-            <div className="bg-white rounded-2xl shadow-xl p-6 transform hover:scale-105 hover:shadow-2xl transition duration-300 border border-green-100">
-              <div className="flex items-center justify-between mb-4">
-                <div className="bg-gradient-to-br from-green-500 to-green-600 p-3 rounded-xl shadow-lg">
-                  <Home className="text-white" size={28} />
-                </div>
-                <span className="text-4xl font-bold bg-gradient-to-br from-green-600 to-green-700 bg-clip-text text-transparent">
-                  37
-                </span>
-              </div>
-              <h4 className="text-gray-600 font-semibold text-lg">RT Total</h4>
-              <p className="text-gray-400 text-sm mt-1">Rukun Tetangga</p>
-            </div>
+          <motion.h1 
+            initial={{ opacity: 0, y: 30 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.8, delay: 0.1 }}
+            className="text-5xl md:text-7xl font-black text-slate-900 mb-6 leading-tight tracking-tight"
+          >
+            Pemetaan Cerdas <br />
+            <span className="bg-gradient-to-r from-emerald-600 to-teal-500 bg-clip-text text-transparent">
+              Pengelolaan Sampah
+            </span>
+          </motion.h1>
 
-            <div className="bg-white rounded-2xl shadow-xl p-6 transform hover:scale-105 hover:shadow-2xl transition duration-300 border border-purple-100">
-              <div className="flex items-center justify-between mb-4">
-                <div className="bg-gradient-to-br from-purple-500 to-purple-600 p-3 rounded-xl shadow-lg">
-                  <Users className="text-white" size={28} />
-                </div>
-                <span className="text-4xl font-bold bg-gradient-to-br from-purple-600 to-purple-700 bg-clip-text text-transparent">
-                  12
-                </span>
-              </div>
-              <h4 className="text-gray-600 font-semibold text-lg">RW Total</h4>
-              <p className="text-gray-400 text-sm mt-1">Rukun Warga</p>
-            </div>
+          <motion.p 
+            initial={{ opacity: 0, y: 30 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.8, delay: 0.2 }}
+            className="text-lg text-slate-600 max-w-2xl mx-auto mb-10 leading-relaxed"
+          >
+            Platform digital terintegrasi untuk memantau distribusi titik sampah dan data kependudukan RT/RW di Kota Pekanbaru demi lingkungan yang lebih bersih.
+          </motion.p>
 
-            <div className="bg-white rounded-2xl shadow-xl p-6 transform hover:scale-105 hover:shadow-2xl transition duration-300 border border-red-100">
-              <div className="flex items-center justify-between mb-4">
-                <div className="bg-gradient-to-br from-red-500 to-red-600 p-3 rounded-xl shadow-lg">
-                  <Trash2 className="text-white" size={28} />
+          <motion.div 
+            initial={{ opacity: 0, scale: 0.9 }}
+            animate={{ opacity: 1, scale: 1 }}
+            transition={{ duration: 0.5, delay: 0.4 }}
+            className="grid grid-cols-2 md:grid-cols-4 gap-4 max-w-4xl mx-auto"
+          >
+            {[
+              { icon: MapPin, val: "6", label: "Kelurahan", color: "text-blue-600", bg: "bg-blue-50" },
+              { icon: Home, val: "117", label: "Total RT", color: "text-emerald-600", bg: "bg-emerald-50" },
+              { icon: Users, val: "36", label: "Total RW", color: "text-purple-600", bg: "bg-purple-50" },
+              { icon: Trash2, val: "45+", label: "Titik Sampah", color: "text-rose-600", bg: "bg-rose-50" },
+            ].map((stat, idx) => (
+              <div key={idx} className="bg-white p-4 rounded-2xl shadow-lg border border-slate-100 flex flex-col items-center justify-center hover:-translate-y-1 transition-transform duration-300">
+                <div className={`p-3 rounded-xl ${stat.bg} mb-3`}>
+                  <stat.icon className={`w-6 h-6 ${stat.color}`} />
                 </div>
-                <span className="text-4xl font-bold bg-gradient-to-br from-red-600 to-red-700 bg-clip-text text-transparent">
-                  45
-                </span>
+                <span className="text-2xl font-black text-slate-800">{stat.val}</span>
+                <span className="text-xs font-bold text-slate-400 uppercase">{stat.label}</span>
               </div>
-              <h4 className="text-gray-600 font-semibold text-lg">
-                Titik Sampah
-              </h4>
-              <p className="text-gray-400 text-sm mt-1">Lokasi TPS</p>
-            </div>
-          </div>
+            ))}
+          </motion.div>
+        </div>
+      </section>
 
-          {/* Features Grid */}
-          <div className="bg-white/70 backdrop-blur-sm rounded-3xl shadow-2xl p-8 md:p-12 border border-green-100">
-            <h3 className="text-3xl font-bold text-gray-800 mb-8 text-center">
-              Fitur Utama Platform
-            </h3>
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-              <div className="group p-8 bg-gradient-to-br from-blue-50 to-blue-100 rounded-2xl hover:shadow-xl transition duration-300 border border-blue-200">
-                <div className="bg-white p-4 rounded-xl w-fit mb-4 group-hover:scale-110 transition duration-300 shadow-md">
-                  <Map className="text-blue-600" size={36} />
-                </div>
-                <h4 className="font-bold text-gray-800 mb-3 text-xl">
-                  Peta Interaktif
-                </h4>
-                <p className="text-gray-600 leading-relaxed">
-                  Visualisasi lokasi RT/RW dan tempat sampah dengan peta digital
-                  yang dapat difilter berdasarkan kategori
-                </p>
-              </div>
+      {/* --- ABOUT SECTION --- */}
+      <section id="about" className="py-24 bg-white relative">
+        <div className="max-w-7xl mx-auto px-6">
+          <div className="grid lg:grid-cols-2 gap-16 items-center">
+            
+            <motion.div 
+              initial={{ opacity: 0, x: -50 }}
+              whileInView={{ opacity: 1, x: 0 }}
+              viewport={{ once: true }}
+              className="relative"
+            >
+               <div className="absolute -top-10 -left-10 w-32 h-32 bg-yellow-100 rounded-full blur-3xl opacity-50"></div>
+               <h2 className="text-4xl font-black text-slate-900 mb-6 leading-tight">
+                 Mengapa WebGIS Ini <br/><span className="text-emerald-600">Penting?</span>
+               </h2>
+               <p className="text-slate-600 text-lg leading-relaxed mb-6">
+                 Pengelolaan sampah di area padat penduduk seperti Sukajadi dan sekitarnya memerlukan presisi data. Sistem ini hadir untuk menjembatani kesenjangan informasi antara kondisi lapangan dan perencanaan kota.
+               </p>
+               
+               <div className="space-y-4">
+                 {[
+                   "Visualisasi real-time lokasi pembuangan sampah ilegal & legal.",
+                   "Database lengkap kependudukan level RT/RW.",
+                 ].map((item, i) => (
+                   <div key={i} className="flex items-center gap-4 p-4 rounded-xl bg-slate-50 border border-slate-100 hover:bg-emerald-50/50 transition-colors">
+                     <div className="bg-emerald-500 rounded-full p-1">
+                       <Leaf size={14} className="text-white" />
+                     </div>
+                     <span className="font-medium text-slate-700">{item}</span>
+                   </div>
+                 ))}
+               </div>
+            </motion.div>
 
-              <div className="group p-8 bg-gradient-to-br from-green-50 to-green-100 rounded-2xl hover:shadow-xl transition duration-300 border border-green-200">
-                <div className="bg-white p-4 rounded-xl w-fit mb-4 group-hover:scale-110 transition duration-300 shadow-md">
-                  <BarChart3 className="text-green-600" size={36} />
-                </div>
-                <h4 className="font-bold text-gray-800 mb-3 text-xl">
-                  Analisis Data
-                </h4>
-                <p className="text-gray-600 leading-relaxed">
-                  Dashboard statistik dan analisis distribusi fasilitas
-                  pengelolaan sampah per kelurahan
-                </p>
+            <motion.div 
+              initial={{ opacity: 0, x: 50 }}
+              whileInView={{ opacity: 1, x: 0 }}
+              viewport={{ once: true }}
+              className="grid grid-cols-2 gap-4"
+            >
+              <div className="space-y-4 mt-8">
+                 <div className="bg-slate-900 text-white p-6 rounded-3xl shadow-2xl">
+                    <Target size={32} className="mb-4 text-emerald-400" />
+                    <h3 className="font-bold text-xl mb-2">Akurasi</h3>
+                    <p className="text-sm text-slate-400">Data diambil langsung melalui survei lapangan tervalidasi.</p>
+                 </div>
+                 <div className="bg-emerald-100 p-6 rounded-3xl">
+                    <div className="h-20 bg-emerald-200/50 rounded-xl mb-3"></div>
+                    <div className="h-4 w-2/3 bg-emerald-200/50 rounded-full"></div>
+                 </div>
               </div>
+              <div className="space-y-4">
+                 <div className="bg-blue-50 p-6 rounded-3xl">
+                    <div className="h-4 w-full bg-blue-200/50 rounded-full mb-3"></div>
+                    <div className="h-4 w-1/2 bg-blue-200/50 rounded-full mb-6"></div>
+                    <div className="h-24 bg-blue-200/50 rounded-xl"></div>
+                 </div>
+                 <div className="bg-white border border-slate-100 p-6 rounded-3xl shadow-xl">
+                    <BarChart3 size={32} className="mb-4 text-blue-600" />
+                    <h3 className="font-bold text-xl mb-2">Analitik</h3>
+                    <p className="text-sm text-slate-500">Dashboard interaktif untuk monitoring wilayah.</p>
+                 </div>
+              </div>
+            </motion.div>
 
-              <div className="group p-8 bg-gradient-to-br from-purple-50 to-purple-100 rounded-2xl hover:shadow-xl transition duration-300 border border-purple-200">
-                <div className="bg-white p-4 rounded-xl w-fit mb-4 group-hover:scale-110 transition duration-300 shadow-md">
-                  <Info className="text-purple-600" size={36} />
-                </div>
-                <h4 className="font-bold text-gray-800 mb-3 text-xl">
-                  Informasi Detail
-                </h4>
-                <p className="text-gray-600 leading-relaxed">
-                  Akses informasi lengkap mengenai setiap lokasi dengan popup
-                  dan detail data spasial
-                </p>
-              </div>
-            </div>
           </div>
         </div>
       </section>
 
-      {/* About Section */}
-      <section id="about" className="py-20 bg-white/50">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="bg-white rounded-3xl shadow-2xl p-10 md:p-16 border border-gray-100">
-            <div className="text-center mb-12">
-              <h2 className="text-4xl font-bold text-gray-800 mb-4">
-                Tentang Proyek
-              </h2>
-              <div className="w-24 h-1 bg-gradient-to-r from-green-500 to-emerald-500 mx-auto rounded-full"></div>
-            </div>
-
-            <div className="grid md:grid-cols-2 gap-12">
-              <div>
-                <h3 className="text-2xl font-semibold text-green-600 mb-4 flex items-center gap-2">
-                  <Building2 size={28} />
-                  Latar Belakang
-                </h3>
-                <p className="text-gray-700 mb-6 leading-relaxed">
-                  Pengelolaan sampah merupakan salah satu tantangan utama dalam
-                  pembangunan kota berkelanjutan. Kota Pekanbaru, khususnya di
-                  enam kelurahan target (Sukajadi, Sukaramai, Kota Baru, Pulau
-                  Karomah, Tanah Datar, dan Kampung Melayu), memerlukan sistem
-                  informasi yang terintegrasi untuk memantau distribusi
-                  fasilitas pengelolaan sampah dan lokasi permukiman RT/RW.
-                </p>
-
-                <h3 className="text-2xl font-semibold text-green-600 mb-4 flex items-center gap-2">
-                  <TreePine size={28} />
-                  Visi & Misi
-                </h3>
-                <p className="text-gray-700 leading-relaxed">
-                  Mewujudkan sistem pengelolaan sampah yang efektif dan
-                  berkelanjutan melalui pemanfaatan teknologi informasi
-                  geografis untuk mendukung Pekanbaru sebagai kota hijau dan
-                  bersih.
-                </p>
-              </div>
-
-              <div>
-                <h3 className="text-2xl font-semibold text-green-600 mb-4">
-                  Tujuan Proyek
-                </h3>
-                <ul className="space-y-4">
-                  <li className="flex items-start gap-3 p-4 bg-green-50 rounded-xl border border-green-100">
-                    <div className="bg-green-500 p-1 rounded-full mt-1">
-                      <ChevronRight className="text-white" size={16} />
-                    </div>
-                    <span className="text-gray-700 flex-1">
-                      Memetakan lokasi rumah RT/RW dan titik tempat pembuangan
-                      sampah secara digital
-                    </span>
-                  </li>
-                  <li className="flex items-start gap-3 p-4 bg-blue-50 rounded-xl border border-blue-100">
-                    <div className="bg-blue-500 p-1 rounded-full mt-1">
-                      <ChevronRight className="text-white" size={16} />
-                    </div>
-                    <span className="text-gray-700 flex-1">
-                      Menyediakan platform berbasis web untuk akses informasi
-                      spasial yang mudah
-                    </span>
-                  </li>
-                  <li className="flex items-start gap-3 p-4 bg-purple-50 rounded-xl border border-purple-100">
-                    <div className="bg-purple-500 p-1 rounded-full mt-1">
-                      <ChevronRight className="text-white" size={16} />
-                    </div>
-                    <span className="text-gray-700 flex-1">
-                      Memfasilitasi analisis distribusi fasilitas pengelolaan
-                      sampah
-                    </span>
-                  </li>
-                  <li className="flex items-start gap-3 p-4 bg-orange-50 rounded-xl border border-orange-100">
-                    <div className="bg-orange-500 p-1 rounded-full mt-1">
-                      <ChevronRight className="text-white" size={16} />
-                    </div>
-                    <span className="text-gray-700 flex-1">
-                      Mendukung pengambilan keputusan dalam perencanaan
-                      pengelolaan sampah
-                    </span>
-                  </li>
-                </ul>
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* Kelurahan Data Section */}
-      <section id="data" className="py-20">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="text-center mb-12">
-            <h2 className="text-4xl font-bold text-gray-800 mb-4">
-              Profil Kelurahan
-            </h2>
-            <p className="text-xl text-gray-600">
-              Data tiga kelurahan yang menjadi fokus area survei
-            </p>
-            <div className="w-24 h-1 bg-gradient-to-r from-green-500 to-emerald-500 mx-auto rounded-full mt-4"></div>
+      {/* --- DATA KELURAHAN (MERGED) --- */}
+      <section id="data" className="py-24 bg-slate-50">
+        <div className="max-w-7xl mx-auto px-6">
+          <div className="text-center mb-16">
+            <span className="text-emerald-600 font-bold tracking-widest uppercase text-xs">Area Survei</span>
+            <h2 className="text-4xl font-black text-slate-900 mt-2">Profil Wilayah</h2>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-12">
-            {kelurahanData.map((kel, index) => (
-              <div
+          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+            {allKelurahan.map((kel, index) => (
+              <motion.div
+                initial={{ opacity: 0, y: 50 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ delay: index * 0.1 }}
                 key={index}
-                className="bg-white rounded-2xl shadow-xl overflow-hidden transform hover:scale-105 hover:shadow-2xl transition duration-300 border border-gray-100"
+                className="group bg-white rounded-3xl overflow-hidden shadow-lg hover:shadow-2xl hover:-translate-y-2 transition-all duration-300 border border-slate-100"
               >
-                <div className="relative h-48 bg-gradient-to-br from-green-400 to-blue-500">
+                {/* Image Header */}
+                <div className="relative h-56 overflow-hidden">
+                  <div className={`absolute inset-0 bg-gradient-to-t ${kel.color} to-transparent opacity-60 z-10`}></div>
                   <Image
                     src={kel.image}
                     alt={kel.name}
                     fill
-                    className="object-cover opacity-80"
+                    className="object-cover group-hover:scale-110 transition-transform duration-700"
                   />
-                  <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent"></div>
-                  <div className="absolute bottom-4 left-4 text-white">
-                    <MapPin className="mb-2" size={32} />
-                    <h3 className="text-2xl font-bold">{kel.name}</h3>
+                  <div className="absolute bottom-4 left-4 z-20 text-white">
+                    <p className="text-[10px] font-bold uppercase tracking-widest opacity-80 mb-1">Kelurahan</p>
+                    <h3 className="text-2xl font-bold leading-none">{kel.name.replace("Kelurahan ", "")}</h3>
                   </div>
                 </div>
+
+                {/* Content */}
                 <div className="p-6">
-                  <p className="text-gray-600 mb-6 leading-relaxed">
-                    {kel.description}
-                  </p>
-
-                  <div className="space-y-3">
-                    <div className="flex justify-between items-center pb-3 border-b border-gray-100">
-                      <span className="text-gray-600 font-medium">
-                        Jumlah RT
-                      </span>
-                      <span className="text-xl font-bold text-green-600">
-                        {kel.rt}
-                      </span>
+                  <p className="text-slate-500 text-sm mb-6 line-clamp-2 h-10">{kel.description}</p>
+                  
+                  <div className="grid grid-cols-2 gap-3 mb-6">
+                    <div className="bg-slate-50 p-3 rounded-2xl">
+                      <span className="block text-xs text-slate-400 font-bold uppercase">Populasi</span>
+                      <span className="block text-lg font-black text-slate-800">{kel.population}</span>
                     </div>
-
-                    <div className="flex justify-between items-center pb-3 border-b border-gray-100">
-                      <span className="text-gray-600 font-medium">
-                        Jumlah RW
-                      </span>
-                      <span className="text-xl font-bold text-blue-600">
-                        {kel.rw}
-                      </span>
+                    <div className="bg-slate-50 p-3 rounded-2xl">
+                      <span className="block text-xs text-slate-400 font-bold uppercase">Luas (km²)</span>
+                      <span className="block text-lg font-black text-slate-800">{kel.area}</span>
                     </div>
+                  </div>
 
-                    <div className="flex justify-between items-center pb-3 border-b border-gray-100">
-                      <span className="text-gray-600 font-medium">
-                        Populasi
-                      </span>
-                      <span className="text-xl font-bold text-purple-600">
-                        {kel.population}
-                      </span>
-                    </div>
-
-                    <div className="flex justify-between items-center pb-3 border-b border-gray-100">
-                      <span className="text-gray-600 font-medium">
-                        Luas Wilayah
-                      </span>
-                      <span className="text-xl font-bold text-orange-600">
-                        {kel.area}
-                      </span>
+                  <div className="flex items-center justify-between pt-4 border-t border-slate-100">
+                    <div className="flex gap-4 text-xs font-bold text-slate-500">
+                      <span className="flex items-center gap-1"><Home size={14} className="text-emerald-500"/> {kel.rt} RT</span>
+                      <span className="flex items-center gap-1"><Users size={14} className="text-blue-500"/> {kel.rw} RW</span>
                     </div>
                   </div>
                 </div>
-              </div>
+              </motion.div>
             ))}
-          </div>
-
-
-
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-12">
-            {kelurahanData2.map((kel, index) => (
-              <div
-                key={index}
-                className="bg-white rounded-2xl shadow-xl overflow-hidden transform hover:scale-105 hover:shadow-2xl transition duration-300 border border-gray-100"
-              >
-                <div className="relative h-48 bg-gradient-to-br from-green-400 to-blue-500">
-                  <Image
-                    src={kel.image}
-                    alt={kel.name}
-                    fill
-                    className="object-cover opacity-80"
-                  />
-                  <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent"></div>
-                  <div className="absolute bottom-4 left-4 text-white">
-                    <MapPin className="mb-2" size={32} />
-                    <h3 className="text-2xl font-bold">{kel.name}</h3>
-                  </div>
-                </div>
-                <div className="p-6">
-                  <p className="text-gray-600 mb-6 leading-relaxed">
-                    {kel.description}
-                  </p>
-
-                  <div className="space-y-3">
-                    <div className="flex justify-between items-center pb-3 border-b border-gray-100">
-                      <span className="text-gray-600 font-medium">
-                        Jumlah RT
-                      </span>
-                      <span className="text-xl font-bold text-green-600">
-                        {kel.rt}
-                      </span>
-                    </div>
-
-                    <div className="flex justify-between items-center pb-3 border-b border-gray-100">
-                      <span className="text-gray-600 font-medium">
-                        Jumlah RW
-                      </span>
-                      <span className="text-xl font-bold text-blue-600">
-                        {kel.rw}
-                      </span>
-                    </div>
-
-                    <div className="flex justify-between items-center pb-3 border-b border-gray-100">
-                      <span className="text-gray-600 font-medium">
-                        Populasi
-                      </span>
-                      <span className="text-xl font-bold text-purple-600">
-                        {kel.population}
-                      </span>
-                    </div>
-
-                    <div className="flex justify-between items-center pb-3 border-b border-gray-100">
-                      <span className="text-gray-600 font-medium">
-                        Luas Wilayah
-                      </span>
-                      <span className="text-xl font-bold text-orange-600">
-                        {kel.area}
-                      </span>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            ))}
-          </div>
-
-          {/* Summary Statistics */}
-          <div className="bg-gradient-to-br from-white to-green-50 rounded-3xl shadow-2xl p-10 border border-green-100">
-            <h3 className="text-2xl font-bold text-gray-800 mb-8 text-center">
-              Ringkasan Data Keseluruhan
-            </h3>
-            <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
-              <div className="text-center p-6 bg-white rounded-2xl shadow-md hover:shadow-xl transition border border-blue-100">
-                <Users className="mx-auto mb-3 text-blue-600" size={36} />
-                <p className="text-gray-500 text-sm mb-2 font-medium">
-                  Total Populasi
-                </p>
-                <p className="text-3xl font-bold text-blue-600">38.347</p>
-                <p className="text-gray-400 text-xs mt-1">jiwa</p>
-              </div>
-              <div className="text-center p-6 bg-white rounded-2xl shadow-md hover:shadow-xl transition border border-green-100">
-                <MapPin className="mx-auto mb-3 text-green-600" size={36} />
-                <p className="text-gray-500 text-sm mb-2 font-medium">
-                  Total Luas
-                </p>
-                <p className="text-3xl font-bold text-green-600">6.93</p>
-                <p className="text-gray-400 text-xs mt-1">km²</p>
-              </div>
-              <div className="text-center p-6 bg-white rounded-2xl shadow-md hover:shadow-xl transition border border-purple-100">
-                <Home className="mx-auto mb-3 text-purple-600" size={36} />
-                <p className="text-gray-500 text-sm mb-2 font-medium">
-                  Total RT 6 Kelurahan
-                </p>
-                <p className="text-3xl font-bold text-purple-600">117</p>
-              </div>
-              <div className="text-center p-6 bg-white rounded-2xl shadow-md hover:shadow-xl transition border border-purple-100">
-                <Home className="mx-auto mb-3 text-purple-600" size={36} />
-                <p className="text-gray-500 text-sm mb-2 font-medium">
-                  Total RW 6 Kelurahan
-                </p>
-                <p className="text-3xl font-bold text-purple-600">36</p>
-              </div>
-            </div>
           </div>
         </div>
       </section>
 
-      {/* CTA Section - Diperbarui ke <Link> */}
-      <section className="py-20 bg-gradient-to-r from-green-600 to-emerald-600">
-        <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-          <h2 className="text-4xl font-bold text-white mb-6">Siap Menjelajahi Data Spasial?</h2>
-          <p className="text-xl text-green-100 mb-8">
-            Akses peta interaktif untuk melihat distribusi lengkap RT/RW dan titik pembuangan sampah
+      {/* --- CTA SECTION --- */}
+      <section className="py-24 relative overflow-hidden">
+        <div className="absolute inset-0 bg-slate-900 z-0"></div>
+        <div className="absolute inset-0 bg-gradient-to-r from-emerald-900 to-slate-900 z-0 opacity-80"></div>
+        
+        <div className="relative z-10 max-w-4xl mx-auto px-6 text-center text-white">
+          <h2 className="text-4xl md:text-5xl font-black mb-6">Jelajahi Data Spasial Sekarang</h2>
+          <p className="text-slate-300 text-lg mb-10 max-w-2xl mx-auto">
+            Akses peta interaktif lengkap dengan fitur filtering, popup informasi detail, dan analisis zonasi wilayah secara gratis.
           </p>
+          
           <Link
             href="/map"
             onClick={handleMapTransition}
-            className="inline-flex items-center gap-3 px-8 py-4 bg-white text-green-600 rounded-full font-bold text-lg hover:bg-green-50 transition shadow-2xl hover:shadow-3xl transform hover:scale-105"
+            className="inline-flex items-center gap-3 px-8 py-5 bg-emerald-500 text-white rounded-2xl font-bold text-lg hover:bg-emerald-400 hover:scale-105 transition-all shadow-lg shadow-emerald-900/50"
           >
-            <Map size={24} />
-            Buka Peta Interaktif
-            <ChevronRight size={24} />
+            <span>Buka WebGIS Interactive</span>
+            <Map size={20} />
           </Link>
         </div>
       </section>
 
-      {/* Footer */}
-      <footer className="bg-gray-900 text-white py-12">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-12 mb-8">
-            <div>
-              <div className="flex items-center gap-3 mb-4">
-                <div className="bg-gradient-to-br from-green-500 to-emerald-500 p-2 rounded-xl">
-                  <Trash2 size={24} />
+      {/* --- FOOTER --- */}
+      <footer className="bg-slate-950 text-slate-400 py-16 border-t border-slate-900">
+        <div className="max-w-7xl mx-auto px-6">
+          <div className="grid md:grid-cols-4 gap-12 mb-12">
+            <div className="col-span-1 md:col-span-2">
+              <div className="flex items-center gap-3 mb-6">
+                <div className="bg-slate-800 p-2 rounded-lg">
+                  <Trash2 size={24} className="text-emerald-500" />
                 </div>
-                <h4 className="text-xl font-bold">WebGIS Sampah</h4>
+                <h4 className="text-xl font-bold text-white">WebGIS Sampah</h4>
               </div>
-              <p className="text-gray-400 leading-relaxed">
-                Platform digital untuk monitoring dan analisis distribusi RT &
-                RW di Kota Pekanbaru
+              <p className="leading-relaxed text-sm max-w-sm">
+                Proyek Tugas Akhir Sistem Informasi Geografis yang bertujuan memetakan infrastruktur kebersihan kota Pekanbaru demi masa depan yang berkelanjutan.
               </p>
             </div>
+            
             <div>
-              <h4 className="text-lg font-semibold mb-4 text-green-400">
-                Kontak
-              </h4>
-              <p className="text-gray-400 mb-2">📧 FFAC 3 TI C</p>
-              <p className="text-gray-400">📍 Pekanbaru, Riau, Indonesia</p>
+              <h4 className="text-white font-bold mb-6">Navigasi</h4>
+              <ul className="space-y-3 text-sm">
+                <li><a href="#home" className="hover:text-emerald-400 transition-colors">Beranda Utama</a></li>
+                <li><a href="#about" className="hover:text-emerald-400 transition-colors">Tentang Proyek</a></li>
+                <li><a href="#data" className="hover:text-emerald-400 transition-colors">Data Wilayah</a></li>
+                <li><Link href="/map" className="hover:text-emerald-400 transition-colors">Peta Interaktif</Link></li>
+              </ul>
             </div>
+
             <div>
-              <h4 className="text-lg font-semibold mb-4 text-green-400">
-                Wilayah Survei
-              </h4>
-              <ul className="space-y-2">
-                <li className="text-gray-400 flex items-center gap-2">
-                  <ChevronRight size={16} className="text-green-500" />
-                  Kelurahan Sukajadi
-                </li>
-                <li className="text-gray-400 flex items-center gap-2">
-                  <ChevronRight size={16} className="text-green-500" />
-                  Kelurahan Kampung Melayu
-                </li>
-                <li className="text-gray-400 flex items-center gap-2">
-                  <ChevronRight size={16} className="text-green-500" />
-                  Kelurahan Kota baru
-                </li>
-                <li className="text-gray-400 flex items-center gap-2">
-                  <ChevronRight size={16} className="text-green-500" />
-                  Kelurahan Sukaramai
-                </li>
-                <li className="text-gray-400 flex items-center gap-2">
-                  <ChevronRight size={16} className="text-green-500" />
-                  Kelurahan Pulau Karomah
-                </li>
-                <li className="text-gray-400 flex items-center gap-2">
-                  <ChevronRight size={16} className="text-green-500" />
-                  Kelurahan Tanah Datar
-                </li>
+              <h4 className="text-white font-bold mb-6">Tim Pengembang</h4>
+              <ul className="space-y-3 text-sm">
+                <li className="flex items-center gap-2"><div className="w-2 h-2 bg-emerald-500 rounded-full"></div> FFAC 3TIC</li>
+                <li className="flex items-center gap-2"><div className="w-2 h-2 bg-emerald-500 rounded-full"></div> Politeknik Caltex Riau</li>
+                <li className="flex items-center gap-2"><div className="w-2 h-2 bg-emerald-500 rounded-full"></div> Angkatan 2023</li>
               </ul>
             </div>
           </div>
-          <div className="border-t border-gray-800 pt-8 text-center">
-            <p className="text-gray-400">
-              &copy; 2025 WebGIS Pengelolaan Sampah Pekanbaru
-            </p>
-            <p className="text-gray-500 text-sm mt-2">
-              Presentasi Proyek: 7 Januari 2026
-            </p>
+          
+          <div className="pt-8 border-t border-slate-900 flex flex-col md:flex-row justify-between items-center text-xs font-medium">
+            <p>&copy; 2025 WebGIS Pekanbaru. All rights reserved.</p>
+            <p className="mt-2 md:mt-0 opacity-50">Dibuat dengan ❤️ untuk Kota Bertuah</p>
           </div>
         </div>
       </footer>
