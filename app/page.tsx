@@ -250,7 +250,7 @@ export default function HomePage() {
               { icon: MapPin, val: "6", label: "Kelurahan", color: "text-blue-600", bg: "bg-blue-50" },
               { icon: Home, val: "117", label: "Total RT", color: "text-emerald-600", bg: "bg-emerald-50" },
               { icon: Users, val: "36", label: "Total RW", color: "text-purple-600", bg: "bg-purple-50" },
-              { icon: Trash2, val: "45+", label: "Titik Sampah", color: "text-rose-600", bg: "bg-rose-50" },
+              { icon: Trash2, val: "8+", label: "Titik Sampah", color: "text-rose-600", bg: "bg-rose-50" },
             ].map((stat, idx) => (
               <div key={idx} className="bg-white p-4 rounded-2xl shadow-lg border border-slate-100 flex flex-col items-center justify-center hover:-translate-y-1 transition-transform duration-300">
                 <div className={`p-3 rounded-xl ${stat.bg} mb-3`}>
