@@ -276,12 +276,12 @@ export default function AdminDashboard() {
                   <>
                     <InputGroup 
                       label="Keterangan Lokasi" 
-                      required={false}
+                      required={true}
                       value={formRTRW.keterangan} 
                       onChange={(e:any) => setFormRTRW({...formRTRW, keterangan: e.target.value})} 
-                      placeholder="Contoh: Ketua RT/RW (Opsional)" 
+                      placeholder="Contoh: Ketua RT/RW..." 
                     />
-                    <InputGroup label="Detail Lokasi" value={formRTRW.alamat} onChange={(e:any) => setFormRTRW({...formRTRW, alamat: e.target.value})} placeholder="Kecamatan Senapelan..." />
+                    <InputGroup label="Detail Lokasi" value={formRTRW.alamat} onChange={(e:any) => setFormRTRW({...formRTRW, alamat: e.target.value})} placeholder="Jl. Durian Gg. Pepaya..." />
                     <div className="grid grid-cols-2 gap-3">
                       <InputGroup label="Latitude" type="number" value={formRTRW.lat} onChange={(e:any) => setFormRTRW({...formRTRW, lat: e.target.value})} />
                       <InputGroup label="Longitude" type="number" value={formRTRW.long} onChange={(e:any) => setFormRTRW({...formRTRW, long: e.target.value})} />
