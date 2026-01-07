@@ -275,11 +275,11 @@ export default function AdminDashboard() {
                 {activeTab === "rtrw" && (
                   <>
                     <InputGroup 
-                      label="Zona" 
+                      label="Keterangan Lokasi" 
                       required={false}
                       value={formRTRW.keterangan} 
                       onChange={(e:any) => setFormRTRW({...formRTRW, keterangan: e.target.value})} 
-                      placeholder="Contoh: Kawasan Industri (Opsional)" 
+                      placeholder="Contoh: Ketua RT/RW (Opsional)" 
                     />
                     <InputGroup label="Detail Lokasi" value={formRTRW.alamat} onChange={(e:any) => setFormRTRW({...formRTRW, alamat: e.target.value})} placeholder="Kecamatan Senapelan..." />
                     <div className="grid grid-cols-2 gap-3">
