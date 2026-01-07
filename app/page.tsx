@@ -227,7 +227,7 @@ export default function HomePage() {
           >
             Pemetaan Cerdas <br />
             <span className="bg-gradient-to-r from-emerald-600 to-teal-500 bg-clip-text text-transparent">
-              Pengelolaan Sampah
+              Kelurahan Kota Pekanbaru
             </span>
           </motion.h1>
 
