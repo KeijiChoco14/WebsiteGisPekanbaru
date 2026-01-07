@@ -16,7 +16,7 @@ Proyek ini dikembangkan oleh **Kelompok FFAC** (Kelas 3 TI C - Politeknik Caltex
 
 | No | Nama Anggota | Role |
 | :--- | :--- | :--- |
-| 1. | **Albert Christian** | Fullstack Developer |
+| 1. | **Albert Christian** | Frontend Developer |
 | 2. | **Cristiano** | Dataset |
 | 3. | **Farizy Rahman Hidayat** | Backend & Database Specialist |
 | 4. | **Febriana** | GIS Analyst & Researcher |
