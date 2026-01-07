@@ -428,7 +428,7 @@ export default function HomePage() {
                 <h4 className="text-xl font-bold text-white">WebGIS Sampah</h4>
               </div>
               <p className="leading-relaxed text-sm max-w-sm">
-                Proyek Tugas Akhir Sistem Informasi Geografis yang bertujuan memetakan infrastruktur kebersihan kota Pekanbaru demi masa depan yang berkelanjutan.
+                Proyek Tugas Akhir Sistem Informasi Geografis yang bertujuan memetakan infrastruktur kebersihan dan lokasi RT/RW kota Pekanbaru demi masa depan yang berkelanjutan.
               </p>
             </div>
             
